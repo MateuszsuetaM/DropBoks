@@ -63,3 +63,11 @@
 	# Husky
 	.husky/_
 	
+
+UploadFilesServer/UploadFilesServer/bin/
+
+UploadFilesServer/UploadFilesServer/Resources/Images/
+
+UploadFilesServer/UploadFilesServer/wwwroot/
+
+UploadFilesClient/.angular/
