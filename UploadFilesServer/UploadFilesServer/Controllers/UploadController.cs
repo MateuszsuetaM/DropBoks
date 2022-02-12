@@ -16,9 +16,11 @@ namespace UploadFilesServer.Controllers
         {
             try
             {
+                Console.WriteLine("aaa");
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = Path.Combine("Resources", "Images");
+                //var folderName = Path.Combine("Resources", "Images");
+                var folderName = "Resources";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
@@ -38,6 +40,8 @@ namespace UploadFilesServer.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine("blad");
+
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
