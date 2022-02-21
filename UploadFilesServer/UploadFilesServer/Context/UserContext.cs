@@ -22,15 +22,25 @@ namespace UploadFilesServer.Context
         }
 
         public DbSet<User> Users { get; set; }
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            var server = "localhost";
-//            var server = "192.168.0.150";
+            var server = "172.18.0.2";
+            //            var server = "localhost";
+            //            var server = "192.168.0.150";
+            //var port = "5432";
+            //var name = "your_db";
+            //var user = "your_user";
+            //var password = "your_password";
+
             var port = "5432";
-            var name = "your_db";
-            var user = "your_user";
-            var password = "your_password";
+            var name = "test1";
+            var user = "test";
+            var password = "test";
+
 
             optionsBuilder.UseNpgsql($"Host={server};Port={port};Database={name};Username={user};Password={password}");
+            //optionsBuilder.UseNpgsql();
         }
+        */
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 using System.IO;
 using UploadFilesServer.Context;
 using UploadFilesServer.Models;
@@ -29,7 +30,44 @@ namespace UploadFilesServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddEntityFrameworkNpgsql()
+            //   .AddDbContext<UserContext>()
+            //   .BuildServiceProvider();
+            //services.AddEntityFrameworkNpgsql()
+            //    .AddDbContext<UserContext>();
+            //services.BuildServiceProvider().
+
+            //            services.AddEntityFrameworkNpgsql();
+            //            services.AddIdentity<User, IdentityRole>(). AddEntityFrameworkStores<UserContext>();
+
+            //services.AddEntityFrameworkNpgsql().AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserContext>();
+            //services.AddDbContext<UserContext>(opt=>opt.UseNpgsql("Username=root;Port=5432;Password=root;Host=172.18.0.2;Database=test;")).AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserContext>();
+            //services.AddDbContext<UserContext>(opt=>opt.UseNpgsql("Username=root;Host=172.18.0.2;Port=5432;Password=root;Database=aaa;")).AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserContext>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            //services.AddDbContext<UserContext>(opt=>opt.UseNpgsql(@"Server=172.18.0.2;Port=5432;Database=root;User Id=root;Password=root;")).AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserContext>();
+
+
+
+
+
+
+            var connectionString = Configuration["Data:ConnectionStrings:PostgreConnectionString"];
+            //var connectionString = Configuration["PostgreSql:Host = 172.18.0.2; Username = root; Database = root"];
+
+
+            //var dbPassword = Configuration["PostgreSql:root"];
+
+            var builder = new NpgsqlConnectionStringBuilder(connectionString);
+            //{
+            //    Password = dbPassword
+            //};
+
+            services.AddDbContext<UserContext>(opt => opt.UseNpgsql(builder.ConnectionString));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserContext>();
+
+
+            //optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=dbname;User Id=Id;Password=password");
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -45,19 +83,16 @@ namespace UploadFilesServer
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddEntityFrameworkNpgsql()
-               .AddDbContext<UserContext>()
-               .BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserContext db)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            db.Database.EnsureCreated();
 
             app.UseHttpsRedirection();
 

@@ -71,3 +71,7 @@ UploadFilesServer/UploadFilesServer/Resources/Images/
 UploadFilesServer/UploadFilesServer/wwwroot/
 
 UploadFilesClient/.angular/
+
+UploadFilesServer/DAL/bin/
+
+UploadFilesServer/DAL/obj/
